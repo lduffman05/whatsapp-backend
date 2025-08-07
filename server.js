@@ -7,14 +7,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Solo para ver que está vivo
+// Rutas de verificación
 app.get("/", (req, res) => res.send("OK: WhatsApp API backend running"));
 app.get("/health", (req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
 
-// TUS CREDENCIALES (las cargamos como variables en Render, no acá)
+// Variables desde Render -> Environment
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
-
 const WA_URL = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
 
 // Enviar plantilla
@@ -45,4 +44,4 @@ app.post("/api/send-template", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Servidor backend en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor backend corriendo en puerto ${PORT}`));
