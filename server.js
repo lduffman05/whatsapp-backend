@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import axios from "axios";
 import cors from "cors";
@@ -7,17 +6,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rutas de verificación (para que / y /health NO den 404)
+// Rutas de verificación
 app.get("/", (req, res) => res.send("OK: WhatsApp API backend running"));
 app.get("/health", (req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
 
-// LEE VARIABLES DEL ENTORNO (usa el nombre que ya tienes en Render)
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN || process.env.META_TOKEN; // <-- acepta ambas
+// Variables ambiente (acepta ACCESS_TOKEN o META_TOKEN)
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN || process.env.META_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
-
 const WA_URL = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
 
-// Endpoint para enviar plantilla
+// Enviar plantilla
 app.post("/api/send-template", async (req, res) => {
   try {
     const { phone, template, language = "en_US", params = [], headerImageUrl, headerMediaId } = req.body;
